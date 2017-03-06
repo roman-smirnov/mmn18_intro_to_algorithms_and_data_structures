@@ -4,13 +4,15 @@ package com.company.dataobjects;
  * Created by roman on 2/24/17.
  */
 public class Customer implements Comparable<Customer> {
-    private final String mName;
+    private final String mFirstName;
+    private final String mLastName;
     private final int mId;
     private final int mCustomerId;
     private final int mBalance;
 
-    public Customer(String name, int id, int customerId, int balance) {
-        mName = name;
+    public Customer(String firstName, String lastName, int id, int customerId, int balance) {
+        mFirstName = firstName;
+        mLastName = lastName;
         //the id is unique
         mId = id;
         //customer id is unique
@@ -22,8 +24,8 @@ public class Customer implements Comparable<Customer> {
         return mBalance;
     }
 
-    public String getName() {
-        return mName;
+    public String getFirstName() {
+        return mFirstName;
     }
 
     public int getId() {
@@ -32,6 +34,10 @@ public class Customer implements Comparable<Customer> {
 
     public int getCustomerId() {
         return mCustomerId;
+    }
+
+    public String getLastName() {
+        return mLastName;
     }
 
     @Override
@@ -53,4 +59,13 @@ public class Customer implements Comparable<Customer> {
         return mCustomerId - customer.getCustomerId();
     }
 
+    @Override
+    public String toString() {
+        return "Customer: " +
+                "FirstName'" + mFirstName + '\'' +
+                ", LastName='" + mLastName + '\'' +
+                ", Id=" + mId +
+                ", CustomerId=" + mCustomerId +
+                ", Balance=" + mBalance;
+    }
 }

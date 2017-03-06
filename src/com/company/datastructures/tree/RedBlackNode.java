@@ -39,7 +39,7 @@ public class RedBlackNode<T extends Comparable> {
         mColor = color;
     }
 
-    public void setParent(RedBlackNode parent) {
+    public void setParent(RedBlackNode<T> parent) {
         mParent = parent;
     }
 
@@ -49,5 +49,9 @@ public class RedBlackNode<T extends Comparable> {
 
     public void setRight(RedBlackNode<T> right) {
         mRight = right;
+    }
+
+    public void setKey(T key) {
+        mKey = key;
     }
 }

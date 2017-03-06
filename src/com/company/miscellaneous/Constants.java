@@ -6,7 +6,7 @@ package com.company.miscellaneous;
 public class Constants {
 
     //update command
-    public static final int UPDATE_CLIENT_COMMAND_LENGTH = 4;
+    public static final int UPDATE_CLIENT_COMMAND_LENGTH = 5;
 
     //new command
     public static final int NEW_CLIENT_COMMAND_LENGTH = 6;

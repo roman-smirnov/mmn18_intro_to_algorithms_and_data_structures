@@ -4,31 +4,32 @@ import com.company.datastructures.DataStructure;
 import com.company.miscellaneous.ExecutionState;
 import com.company.dataobjects.Customer;
 
+import static com.company.utils.Preconditions.checkNotNull;
+
 /**
  * Created by roman on 3/2/17.
  */
 public class UpdateCommand implements Command<Customer>{
-    private final String mName;
-    private final int mId;
-    private final int mCustomerId;
-    private final int mBalance;
+    private final Customer mCustomer;
 
-    public UpdateCommand(String name, int id, int customerId, int balance) {
-        mName = name;
-        mId = id;
-        mCustomerId = customerId;
-        mBalance = balance;
+    public UpdateCommand(Customer customer) {
+        checkNotNull(customer);
+        mCustomer = customer;
     }
 
     @Override
     public ExecutionState execute(DataStructure<Customer> dataStructure) {
-        Customer tempCustomer = new Customer(mName, mId, mCustomerId, mBalance);
-        Customer customer = dataStructure.find(tempCustomer);
+        checkNotNull(dataStructure);
+        Customer customer = dataStructure.find(mCustomer);
         if (customer == null) {
+            System.out.println(ExecutionState.NOT_FOUND+" " + mCustomer);
             return ExecutionState.NOT_FOUND;
         }else{
-            customer = new Customer(mName, mId, mCustomerId, mBalance + customer.getBalance());
+            customer = new Customer(mCustomer.getFirstName(),
+                    mCustomer.getLastName(), mCustomer.getId(),
+                    mCustomer.getCustomerId(), mCustomer.getBalance() + customer.getBalance());
             dataStructure.update(customer);
+            System.out.println(ExecutionState.SUCCESS+" " + customer);
             return ExecutionState.SUCCESS;
         }
     }
