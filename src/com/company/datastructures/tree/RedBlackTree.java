@@ -2,12 +2,18 @@ package com.company.datastructures.tree;
 
 import com.company.datastructures.DataStructure;
 
-import static com.company.utils.Preconditions.checkNotNull;
+import static com.company.miscellaneous.Preconditions.checkNotNull;
 
+/**
+ * implementation of a red black tree
+ * The Key and Value are one and the same because it implements comparable
+ * all methods essentially copied from the book - modified to not use the nill object pattern
+ * @param <K>
+ */
 public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
 
+    //the root node
     private RedBlackNode<K> mRoot = null;
-    private final RedBlackNode<K> mNill = new RedBlackNode<>(null);
 
     @Override
     public K find(K k) {
@@ -48,159 +54,90 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         if (updateNode == null) {
             return false;
         } else {
-            //we can do this because the keys are the ids and the value we're replacing is the balance
             updateNode.setKey(k);
             return true;
         }
     }
 
-    private RedBlackNode<K> search(K key) {
-        checkNotNull(key);
-        RedBlackNode<K> currentNode;
-        currentNode = mRoot;
-        while (currentNode != null && !key.equals(currentNode.getKey())) {
-            if (key.compareTo(currentNode.getKey()) < 0) {
-                currentNode = currentNode.getLeft();
-            } else {
-                currentNode = currentNode.getRight();
-            }
-        }
-        return currentNode;
-    }
-
-    private RedBlackNode<K> successor(RedBlackNode<K> x) {
-        RedBlackNode<K> y;
-        if (x.getRight() != null) {
-            return treeMinimum(x.getRight());
-        }
-        y = x.getParent();
-        while (y != null && x == y.getRight()) {
-            x = y;
-            y = y.getParent();
-        }
-        return y;
-    }
-
-
-    private void rightRotate(RedBlackNode<K> x) {
-        checkNotNull(x);
-        RedBlackNode<K> y;
-        y = x.getLeft();
-        x.setLeft(y.getRight());
-        if (y.getRight() != null) {
-            y.getRight().setParent(x);
-        }
-        y.setParent(x.getParent());
-        if (x.getParent() == null) {
-            mRoot = y;
-        } else {
-            if (x == x.getParent().getRight()) {
-                x.getParent().setRight(y);
-            } else {
-                x.getParent().setLeft(y);
-            }
-        }
-        y.setRight(x);
-        x.setParent(y);
-    }
-
-
-    private void leftRotate(RedBlackNode<K> x) {
-        RedBlackNode<K> y;
-        y = x.getRight();
-        x.setRight(y.getLeft());
-        if (y.getLeft() != null) {
-            y.getLeft().setParent(x);
-        }
-        y.setParent(x.getParent());
-        if (x.getParent() == null) {
-            mRoot = y;
-        } else {
-            if (x == x.getParent().getLeft()) {
-                x.getParent().setLeft(y);
-            } else {
-                x.getParent().setRight(y);
-            }
-        }
-        y.setLeft(x);
-        x.setParent(y);
-    }
-
+    /**
+     * insert a new node into our red black tree
+     * @param newNode
+     */
     private void insert(RedBlackNode<K> newNode) {
         checkNotNull(newNode);
-
-        RedBlackNode<K> x;
-        RedBlackNode<K> y;
-        x = null;
-        y = mRoot;
-
-        //travel down the tree until reaching the appropriate leaf
-        while (y != null) {
-            x = y;
-            if (newNode.getKey().compareTo(y.getKey()) < 0) {
-                y = y.getLeft();
-            } else {
-                y = y.getRight();
+        RedBlackNode<K> y = null;
+        RedBlackNode<K> x = mRoot;
+        //go down the tree until x is a null leaft
+        while (x != null) {
+            y = x;
+            if (newNode.getKey().compareTo(x.getKey()) < 0) {
+                x = x.getLeft();
+            }else{
+                x = x.getRight();
             }
         }
-        newNode.setParent(x);
-        // set it as the root node
-        if (x == null) {
+        //set x's parent to be newNode's parent
+        newNode.setParent(y);
+        //if newNode's parent is null, then newNode is the root
+        if (y == null) {
             mRoot = newNode;
-        } else if (newNode.getKey().compareTo(x.getKey()) < 0) {
-            //set the new node as left or right child of its parent
-            x.setLeft(newNode);
-        } else {
-            //set the new node as the right child of its parent
-            x.setRight(newNode);
+//            place the newNode as the left/right child of its parent according to its value
+        } else if (newNode.getKey().compareTo(y.getKey()) < 0) {
+            y.setLeft(newNode);
+        }else{
+            y.setRight(newNode);
         }
         //fix the tree
         insertFixup(newNode);
-        mSize++;
     }
 
-    private void insertFixup(RedBlackNode<K> z) {
+
+    /**
+     * fix the tree after inserting a new node
+     * @param newNode
+     */
+    private void insertFixup(RedBlackNode<K> newNode) {
         RedBlackNode<K> uncle;
-        while (isRed(z.getParent())) {
+        while (isRed(newNode.getParent())) {
             // check if we're in a left leaning branch
-            if (z.getParent() == z.getParent().getParent().getLeft()) {
+            if (newNode.getParent() == newNode.getParent().getParent().getLeft()) {
                 //the uncle is grandfather's right son
-                uncle = z.getParent().getParent().getRight();
+                uncle = newNode.getParent().getParent().getRight();
                 if (isRed(uncle)) {
                     // case 1
-                    z.getParent().setColor(Color.BLACK);
+                    newNode.getParent().setColor(Color.BLACK);
                     uncle.setColor(Color.BLACK);
-                    z.getParent().getParent().setColor(Color.RED);
-                    z = z.getParent().getParent();
-                } else if (z == z.getParent().getRight()) {
+                    newNode.getParent().getParent().setColor(Color.RED);
+                    newNode = newNode.getParent().getParent();
+                } else if (newNode == newNode.getParent().getRight()) {
                     // case 2
-                    z = z.getParent();
-                    leftRotate(z);
+                    newNode = newNode.getParent();
+                    leftRotate(newNode);
                 } else {
                     // case 3
-                    z.getParent().setColor(Color.BLACK);
-                    z.getParent().getParent().setColor(Color.RED);
-                    rightRotate(z.getParent().getParent());
+                    newNode.getParent().setColor(Color.BLACK);
+                    newNode.getParent().getParent().setColor(Color.RED);
+                    rightRotate(newNode.getParent().getParent());
                 }
             } else {
                 //we're in a right leaning branch
                 // the uncle is the grandfather's left branch
-                uncle = z.getParent().getParent().getLeft();
+                uncle = newNode.getParent().getParent().getLeft();
                 if (isRed(uncle)) {
 //                    case 1
-                    z.getParent().setColor(Color.BLACK);
+                    newNode.getParent().setColor(Color.BLACK);
                     uncle.setColor(Color.BLACK);
-                    z.getParent().getParent().setColor(Color.RED);
-                    z = z.getParent().getParent();
-                } else if (z == z.getParent().getLeft()) {
+                    newNode.getParent().getParent().setColor(Color.RED);
+                    newNode = newNode.getParent().getParent();
+                } else if (newNode == newNode.getParent().getLeft()) {
 //                    case 2
-                    z = z.getParent();
-                    rightRotate(z);
+                    newNode = newNode.getParent();
+                    rightRotate(newNode);
                 } else {
 //                    case 3
-                    z.getParent().setColor(Color.BLACK);
-                    z.getParent().getParent().setColor(Color.RED);
-                    leftRotate(z.getParent().getParent());
+                    newNode.getParent().setColor(Color.BLACK);
+                    newNode.getParent().getParent().setColor(Color.RED);
+                    leftRotate(newNode.getParent().getParent());
                 }
             }
         }
@@ -217,11 +154,11 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         RedBlackNode<K> y;
         RedBlackNode<K> x;
         Color tempColor = null;
-        //check if either child is null
+        //check if one of the children is null
         if (delNode.getLeft() == null || delNode.getRight() == null) {
             y = delNode;
         } else {
-            y = successor(delNode);
+            y = treeSuccessor(delNode);
         }
         if (y.getLeft() != null) {
             x = y.getLeft();
@@ -231,6 +168,7 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         if (x != null) {
             x.setParent(y.getParent());
         }
+
         if (y.getParent() == null) {
             mRoot = x;
         } else if (y == y.getParent().getLeft()) {
@@ -240,14 +178,10 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         }
         if (y != delNode) {
             delNode.setKey(y.getKey());
-            delNode.setLeft(y.getLeft());
-            delNode.setRight(y.getRight());
-            delNode.setParent(y.getParent());
         }
-        if (isBlack(y)) {
+        if (isBlack(y) && x != null) {
             deleteFixup(x);
         }
-        mSize--;
     }
 
     /**
@@ -261,28 +195,25 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
             if (x == x.getParent().getLeft()) {
                 w = x.getParent().getRight();
                 if (w.getColor() == Color.RED) {
-                    /*Case 1*/
+//                    case 1
                     w.setColor(Color.BLACK);
                     x.getParent().setColor(Color.RED);
                     leftRotate(x.getParent());
                     w = x.getParent().getRight();
-                    /*End of Case 1*/
                 }
                 if (w.getLeft().getColor() == Color.BLACK && w.getRight().getColor() == Color.BLACK) {
-                    /*Case 2*/
+//                    case 2
                     w.setColor(Color.RED);
                     x = x.getParent();
-                    /*End of Case 2*/
                 } else {
                     if (w.getRight().getColor() == Color.BLACK) {
-                        /*Case 3*/
+//                        case 3
                         w.getLeft().setColor(Color.BLACK);
                         w.setColor(Color.RED);
                         rightRotate(w);
                         w = x.getParent().getRight();
-                        /*End of Case 3*/
                     }
-                    /*Case 4*/
+//                    case 4
                     w.setColor(x.getParent().getColor());
                     x.getParent().setColor(Color.BLACK);
                     w.getRight().setColor(Color.BLACK);
@@ -292,28 +223,25 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
             } else {
                 w = x.getParent().getLeft();
                 if (w.getColor() == Color.RED) {
-                    /*Case 1*/
+//                    case 1
                     w.setColor(Color.BLACK);
                     x.getParent().setColor(Color.RED);
                     rightRotate(x.getParent());
                     w = x.getParent().getLeft();
-                    /*End of Case 1*/
                 }
                 if (w.getRight().getColor() == Color.BLACK && w.getLeft().getColor() == Color.BLACK) {
-                    /*Case 2*/
+//                    case 2
                     w.setColor(Color.RED);
                     x = x.getParent();
-                    /*End of Case 2*/
                 } else {
                     if (w.getLeft().getColor() == Color.BLACK) {
-                        /*Case 3*/
+//                        case 3
                         w.getRight().setColor(Color.BLACK);
                         w.setColor(Color.RED);
                         leftRotate(w);
                         w = x.getParent().getLeft();
-                        /*End of Case 3*/
                     }
-                    /*Case 4*/
+//                    case 4
                     w.setColor(x.getParent().getColor());
                     x.getParent().setColor(Color.BLACK);
                     w.getLeft().setColor(Color.BLACK);
@@ -342,5 +270,107 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
      */
     private boolean isBlack(RedBlackNode<K> node) {
         return node == null || node.getColor() == Color.BLACK;
+    }
+
+    /**
+     * return the node in the tree containing the key given as parameter, null otherwise
+     * @param key
+     * @return
+     */
+    private RedBlackNode<K> search(K key) {
+        checkNotNull(key);
+        RedBlackNode<K> currentNode;
+        currentNode = mRoot;
+
+        while (currentNode != null && key.compareTo(currentNode.getKey()) != 0) {
+            if (key.compareTo(currentNode.getKey()) < 0) {
+                currentNode = currentNode.getLeft();
+            } else {
+                currentNode = currentNode.getRight();
+            }
+        }
+        return currentNode;
+    }
+
+    /**
+     * find the tree successor of a node given as parameter
+     * @param x
+     * @return
+     */
+    private RedBlackNode<K> treeSuccessor(RedBlackNode<K> x) {
+        RedBlackNode<K> y;
+        if (x.getRight() != null) {
+            return treeMinimum(x.getRight());
+        }
+        y = x.getParent();
+        while (y != null && x == y.getRight()) {
+            x = y;
+            y = y.getParent();
+        }
+        return y;
+    }
+
+    /**
+     * find the minimum key of the tree
+     * @param x
+     * @return
+     */
+    private RedBlackNode<K> treeMinimum(RedBlackNode<K> x) {
+        while (x.getLeft() != null) {
+            x = x.getLeft();
+        }
+        return x;
+    }
+
+
+    /**
+     * right rotation
+     * @param x
+     */
+    private void rightRotate(RedBlackNode<K> x) {
+        checkNotNull(x);
+        RedBlackNode<K> y;
+        y = x.getLeft();
+        x.setLeft(y.getRight());
+        if (y.getRight() != null) {
+            y.getRight().setParent(x);
+        }
+        y.setParent(x.getParent());
+        if (x.getParent() == null) {
+            mRoot = y;
+        } else {
+            if (x == x.getParent().getRight()) {
+                x.getParent().setRight(y);
+            } else {
+                x.getParent().setLeft(y);
+            }
+        }
+        y.setRight(x);
+        x.setParent(y);
+    }
+
+    /**
+     * left rotation
+     * @param x
+     */
+    private void leftRotate(RedBlackNode<K> x) {
+        RedBlackNode<K> y;
+        y = x.getRight();
+        x.setRight(y.getLeft());
+        if (y.getLeft() != null) {
+            y.getLeft().setParent(x);
+        }
+        y.setParent(x.getParent());
+        if (x.getParent() == null) {
+            mRoot = y;
+        } else {
+            if (x == x.getParent().getLeft()) {
+                x.getParent().setLeft(y);
+            } else {
+                x.getParent().setRight(y);
+            }
+        }
+        y.setLeft(x);
+        x.setParent(y);
     }
 }

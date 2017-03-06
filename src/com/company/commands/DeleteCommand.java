@@ -1,13 +1,12 @@
 package com.company.commands;
 
 import com.company.datastructures.DataStructure;
-import com.company.miscellaneous.ExecutionState;
 import com.company.dataobjects.Customer;
 
 /**
- * Created by roman on 3/2/17.
+ *  the delete command
  */
-public class DeleteCommand implements Command<Customer> {
+public final class DeleteCommand implements Command<Customer> {
     private final int mCustomerId;
 
     public DeleteCommand(int id) {
@@ -19,14 +18,15 @@ public class DeleteCommand implements Command<Customer> {
         Customer tempCustomer = new Customer("", "", 0, mCustomerId, 0);
         Customer customer = dataStructure.find(tempCustomer);
         if (customer == null) {
-            return ExecutionState.NOT_FOUND;
+            System.out.println(ExecutionState.ERROR_NOT_FOUND + " customer with customerId "+mCustomerId + " not found");
+            return ExecutionState.ERROR_NOT_FOUND;
         } else if (customer.getBalance() != 0) {
-            System.out.println(ExecutionState.BALANCE_NOT_ZERO + " " + customer.toString());
-            return ExecutionState.BALANCE_NOT_ZERO;
+            System.out.println(ExecutionState.ERROR_BALANCE_NOT_ZERO + " " + customer.toString());
+            return ExecutionState.ERROR_BALANCE_NOT_ZERO;
         } else {
             dataStructure.delete(customer);
-            System.out.println(ExecutionState.SUCCESS + " " + customer.toString());
-            return ExecutionState.SUCCESS;
+            System.out.println(ExecutionState.SUCCESS_DELETE + " " + customer.toString());
+            return ExecutionState.SUCCESS_DELETE;
         }
     }
 }

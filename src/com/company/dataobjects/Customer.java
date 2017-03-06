@@ -2,8 +2,9 @@ package com.company.dataobjects;
 
 /**
  * Created by roman on 2/24/17.
+ * The customer class - an immutable instance of a customer
  */
-public class Customer implements Comparable<Customer> {
+public final class Customer implements Comparable<Customer> {
     private final String mFirstName;
     private final String mLastName;
     private final int mId;
@@ -62,7 +63,7 @@ public class Customer implements Comparable<Customer> {
     @Override
     public String toString() {
         return "Customer: " +
-                "FirstName'" + mFirstName + '\'' +
+                "FirstName='" + mFirstName + '\'' +
                 ", LastName='" + mLastName + '\'' +
                 ", Id=" + mId +
                 ", CustomerId=" + mCustomerId +

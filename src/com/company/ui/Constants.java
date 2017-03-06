@@ -1,7 +1,8 @@
-package com.company.miscellaneous;
+package com.company.ui;
 
 /**
  * Created by roman on 3/2/17.
+ * a class that holds some constants for parsing the commands
  */
 public class Constants {
 

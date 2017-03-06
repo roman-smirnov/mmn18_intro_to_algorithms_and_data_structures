@@ -1,15 +1,14 @@
 package com.company.commands;
 
 import com.company.datastructures.DataStructure;
-import com.company.miscellaneous.ExecutionState;
 import com.company.dataobjects.Customer;
 
-import static com.company.utils.Preconditions.checkNotNull;
+import static com.company.miscellaneous.Preconditions.checkNotNull;
 
 /**
- * Created by roman on 3/2/17.
+ * the new customer command
  */
-public class NewCommand implements Command<Customer>{
+public final class NewCommand implements Command<Customer>{
     private final Customer mCustomer;
 
     public NewCommand(Customer customer) {
@@ -20,11 +19,11 @@ public class NewCommand implements Command<Customer>{
     @Override
     public ExecutionState execute(DataStructure<Customer> dataStructure) {
         if(dataStructure.add(mCustomer)){
-            System.out.println(ExecutionState.SUCCESS + " " + mCustomer.toString());
-            return ExecutionState.SUCCESS;
+            System.out.println(ExecutionState.SUCCESS_ADD + " " + mCustomer.toString());
+            return ExecutionState.SUCCESS_ADD;
         }else{
-            System.out.println(ExecutionState.ALREADY_EXISTS + " " + mCustomer.toString());
-            return ExecutionState.ALREADY_EXISTS;
+            System.out.println(ExecutionState.ERROR_ALREADY_EXISTS + " " + mCustomer.toString());
+            return ExecutionState.ERROR_ALREADY_EXISTS;
         }
 
 

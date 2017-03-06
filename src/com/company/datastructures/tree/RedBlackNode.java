@@ -3,6 +3,7 @@ package com.company.datastructures.tree;
 
 /**
  * Created by roman on 3/4/17.
+ * a red black node in our red black tree
  */
 public class RedBlackNode<T extends Comparable> {
     private Color mColor = Color.RED;

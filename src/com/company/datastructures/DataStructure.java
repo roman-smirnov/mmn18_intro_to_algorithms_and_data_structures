@@ -1,7 +1,7 @@
 package com.company.datastructures;
 
 /**
- * Created by roman on 3/5/17.
+ * it's an interface that abstracts over all our datastrctures
  */
 public interface DataStructure<T extends Comparable<T>> {
     T find(T t);

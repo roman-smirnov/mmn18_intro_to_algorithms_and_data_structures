@@ -1,4 +1,4 @@
-package com.company.utils;
+package com.company.ui;
 
 import com.company.commands.Command;
 import com.company.commands.DeleteCommand;
@@ -9,21 +9,29 @@ import com.company.dataobjects.Customer;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.company.miscellaneous.Constants.*;
-import static com.company.utils.Preconditions.checkNotNull;
+import static com.company.ui.Constants.*;
+import static com.company.miscellaneous.Preconditions.checkNotNull;
 
 /**
- * Created by roman on 3/2/17.
+ * This class turns user input string into command objects
  */
 public class CommandParser {
 
     private enum CommandType{ NEW, UPDATE, DELETE, MAX,MINUS, INVALID}
 
-
+    /**
+     * Get the command object
+     * may returns
+     * @param command
+     * @return
+     */
     public Command<Customer> getCommand(String command){
         checkNotNull(command);
+        //parse the strings into a string list using a regular expression
         List<String> parsedCommand = parseCommand(command);
+        //figure out what kind of command is this
         CommandType commandType = getCommandType(parsedCommand);
+        //extract the data from the string list
         switch (commandType) {
             case NEW:
                 return generateNewCommand(parsedCommand);
@@ -32,9 +40,11 @@ public class CommandParser {
             case DELETE:
                 return generateDeleteCommand(parsedCommand);
             case MAX:
+//                TODO NOT YET IMPLEMENTED
                 System.out.println(CommandType.MAX.name() + "NOT YET IMPLEMENTED");
                 return null;
             case MINUS:
+                //                TODO NOT YET IMPLEMENTED
                 System.out.println(CommandType.MINUS.name() + "NOT YET IMPLEMENTED");
                 return null;
             default:
@@ -43,7 +53,11 @@ public class CommandParser {
         }
     }
 
-
+    /**
+     * given a valid string list for a new command, generates a NewCommand
+     * @param parsedCommand
+     * @return
+     */
     private NewCommand generateNewCommand(List<String> parsedCommand) {
         checkNotNull(parsedCommand);
         String firstName = parsedCommand.get(1);
@@ -54,12 +68,23 @@ public class CommandParser {
         return new NewCommand(new Customer(firstName,lastName,id, customerId, balance));
     }
 
+    /**
+     * given a valid string list for a delete command, generates a DeleteCommand
+     * @param parsedCommand
+     * @return
+     */
     private DeleteCommand generateDeleteCommand(List<String> parsedCommand) {
 
         int customerId = Integer.parseInt(parsedCommand.get(1));
         return new DeleteCommand(customerId);
     }
 
+
+    /**
+     * given a valid string list for an update command, generates a UpdateCommand
+     * @param parsedCommand
+     * @return
+     */
     private UpdateCommand generateUpdateCommand(List<String> parsedCommand) {
         checkNotNull(parsedCommand);
         String firstName = parsedCommand.get(0);
@@ -103,7 +128,7 @@ public class CommandParser {
      */
     private List<String> parseCommand(String command) {
         checkNotNull(command);
-        return Arrays.asList(command.split("\\s+"));
+        return Arrays.asList(command.trim().split("\\s+"));
     }
 
     /**
