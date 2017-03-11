@@ -1,18 +1,20 @@
 package com.company.datastructures.tree;
 
 
+import com.company.datastructures.DataNode;
+
 /**
  * Created by roman on 3/4/17.
  * a red black node in our red black tree
  */
-public class RedBlackNode<T extends Comparable> {
+class RedBlackNode<K> implements DataNode<K> {
     private Color mColor = Color.RED;
-    private T mKey = null;
-    private RedBlackNode<T> mParent = null;
-    private RedBlackNode<T> mLeft = null;
-    private RedBlackNode<T> mRight = null;
+    private K mKey = null;
+    private RedBlackNode<K> mParent = null;
+    private RedBlackNode<K> mLeft = null;
+    private RedBlackNode<K> mRight = null;
 
-    public RedBlackNode(T mKey) {
+    public RedBlackNode(K mKey) {
         this.mKey = mKey;
     }
 
@@ -20,19 +22,20 @@ public class RedBlackNode<T extends Comparable> {
         return mColor;
     }
 
-    public T getKey() {
+    @Override
+    public K getKey() {
         return mKey;
     }
 
-    public RedBlackNode<T> getParent() {
+    public RedBlackNode<K> getParent() {
         return mParent;
     }
 
-    public RedBlackNode<T> getLeft() {
+    public RedBlackNode<K> getLeft() {
         return mLeft;
     }
 
-    public RedBlackNode<T> getRight() {
+    public RedBlackNode<K> getRight() {
         return mRight;
     }
 
@@ -40,19 +43,19 @@ public class RedBlackNode<T extends Comparable> {
         mColor = color;
     }
 
-    public void setParent(RedBlackNode<T> parent) {
+    public void setParent(RedBlackNode<K> parent) {
         mParent = parent;
     }
 
-    public void setLeft(RedBlackNode<T> left) {
+    public void setLeft(RedBlackNode<K> left) {
         mLeft = left;
     }
 
-    public void setRight(RedBlackNode<T> right) {
+    public void setRight(RedBlackNode<K> right) {
         mRight = right;
     }
 
-    public void setKey(T key) {
+    public void setKey(K key) {
         mKey = key;
     }
 }

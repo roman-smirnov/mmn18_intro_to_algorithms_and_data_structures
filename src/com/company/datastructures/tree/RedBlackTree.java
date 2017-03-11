@@ -1,6 +1,9 @@
 package com.company.datastructures.tree;
 
+import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
+
+import java.util.Comparator;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
@@ -10,51 +13,94 @@ import static com.company.miscellaneous.Preconditions.checkNotNull;
  * all methods essentially copied from the book - modified to not use the nill object pattern
  * @param <K>
  */
-public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
+public class RedBlackTree<K> implements DataStructure<K> {
 
     //the root node
     private RedBlackNode<K> mRoot = null;
+    private final Comparator<K> mComparator;
 
-    @Override
-    public K find(K k) {
-        RedBlackNode<K> node = search(k);
-        if (node == null) {
-            return null;
-        } else {
-            return search(k).getKey();
-        }
+    public RedBlackTree(Comparator<K> comparator) {
+        checkNotNull(comparator);
+        mComparator = comparator;
     }
 
+    /**
+     * return the node in the tree containing the key given as parameter, null otherwise
+     * @param key
+     * @return the node containing the given key
+     */
     @Override
-    public boolean delete(K k) {
-        RedBlackNode<K> node = search(k);
-        if (node == null) {
+    public DataNode<K> find(K key) {
+        checkNotNull(key);
+        RedBlackNode<K> currentNode;
+        currentNode = mRoot;
+
+        while (currentNode != null &&  mComparator.compare(key, currentNode.getKey()) != 0) {
+            if (mComparator.compare(key,currentNode.getKey()) < 0) {
+                currentNode = currentNode.getLeft();
+            } else {
+                currentNode = currentNode.getRight();
+            }
+        }
+        return currentNode;
+    }
+
+
+    /**
+     * Tree delete method.
+     * The node to delete must not be null and must be within the tree!
+     * @param node Node to delete.
+     */
+    @Override
+    public boolean delete(DataNode<K> node) {
+        RedBlackNode<K> delNode = convertToRedBlack(node);
+        if (delNode == null) {
             return false;
-        } else {
-            delete(node);
-            return true;
         }
+        RedBlackNode<K> y;
+        RedBlackNode<K> x;
+        Color tempColor = null;
+        //check if one of the children is null
+        if (delNode.getLeft() == null || delNode.getRight() == null) {
+            y = delNode;
+        } else {
+            y = treeSuccessor(delNode);
+        }
+        if (y.getLeft() != null) {
+            x = y.getLeft();
+        } else {
+            x = y.getRight();
+        }
+        if (x != null) {
+            x.setParent(y.getParent());
+        }
+        if (y.getParent() == null) {
+            mRoot = x;
+        } else if (y == y.getParent().getLeft()) {
+            y.getParent().setLeft(x);
+        } else {
+            y.getParent().setRight(x);
+        }
+        if (y != delNode) {
+            delNode.setKey(y.getKey());
+        }
+        if (isBlack(y) && x != null) {
+            deleteFixup(x);
+        }
+        return true;
     }
 
+
+    /**
+     * insert a new node into our red black tree
+     * @param k
+     */
     @Override
     public boolean add(K k) {
-        RedBlackNode<K> node = search(k);
-        if (node == null) {
+        if (find(k) != null) {
+            return false;
+        }else {
             insert(new RedBlackNode<K>(k));
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean update(K k) {
-        //find the node with given key
-        RedBlackNode<K> updateNode = search(k);
-        if (updateNode == null) {
-            return false;
-        } else {
-            updateNode.setKey(k);
             return true;
         }
     }
@@ -70,7 +116,7 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         //go down the tree until x is a null leaft
         while (x != null) {
             y = x;
-            if (newNode.getKey().compareTo(x.getKey()) < 0) {
+            if (mComparator.compare(newNode.getKey(),x.getKey()) < 0) {
                 x = x.getLeft();
             }else{
                 x = x.getRight();
@@ -82,7 +128,7 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         if (y == null) {
             mRoot = newNode;
 //            place the newNode as the left/right child of its parent according to its value
-        } else if (newNode.getKey().compareTo(y.getKey()) < 0) {
+        } else if (mComparator.compare(newNode.getKey(),y.getKey()) < 0) {
             y.setLeft(newNode);
         }else{
             y.setRight(newNode);
@@ -91,6 +137,32 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         insertFixup(newNode);
     }
 
+
+    @Override
+    public boolean update(DataNode<K> node, K k) {
+        RedBlackNode<K> updateNode = convertToRedBlack(node);
+        if ( updateNode == null || mComparator.compare(updateNode.getKey(), k) != 0) {
+            return false;
+        }
+        updateNode.setKey(k);
+        return true;
+    }
+
+    /**
+     * converts a DataNode to a RedBlackNode of same type
+     * will throw IllegalArgumentException if it's not RedBlackNode
+     * @param node
+     * @return
+     */
+    private RedBlackNode<K> convertToRedBlack(DataNode<K> node) {
+        checkNotNull(node);
+        // cast node to RedBlackNode because we need to use methods specific to it
+        if (node instanceof RedBlackNode) {
+            return (RedBlackNode<K>) node;
+        }else {
+            return null;
+        }
+    }
 
     /**
      * fix the tree after inserting a new node
@@ -144,45 +216,7 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         mRoot.setColor(Color.BLACK);
     }
 
-    /**
-     * Tree delete method.
-     * The node to delete must not be null and must be within the tree!
-     * @param delNode Node to delete.
-     */
-    private void delete(RedBlackNode<K> delNode) {
-        checkNotNull(delNode);
-        RedBlackNode<K> y;
-        RedBlackNode<K> x;
-        Color tempColor = null;
-        //check if one of the children is null
-        if (delNode.getLeft() == null || delNode.getRight() == null) {
-            y = delNode;
-        } else {
-            y = treeSuccessor(delNode);
-        }
-        if (y.getLeft() != null) {
-            x = y.getLeft();
-        } else {
-            x = y.getRight();
-        }
-        if (x != null) {
-            x.setParent(y.getParent());
-        }
 
-        if (y.getParent() == null) {
-            mRoot = x;
-        } else if (y == y.getParent().getLeft()) {
-            y.getParent().setLeft(x);
-        } else {
-            y.getParent().setRight(x);
-        }
-        if (y != delNode) {
-            delNode.setKey(y.getKey());
-        }
-        if (isBlack(y) && x != null) {
-            deleteFixup(x);
-        }
-    }
 
     /**
      * Delete fixup helper method.
@@ -272,25 +306,7 @@ public class RedBlackTree<K extends Comparable<K>> implements DataStructure<K> {
         return node == null || node.getColor() == Color.BLACK;
     }
 
-    /**
-     * return the node in the tree containing the key given as parameter, null otherwise
-     * @param key
-     * @return
-     */
-    private RedBlackNode<K> search(K key) {
-        checkNotNull(key);
-        RedBlackNode<K> currentNode;
-        currentNode = mRoot;
-
-        while (currentNode != null && key.compareTo(currentNode.getKey()) != 0) {
-            if (key.compareTo(currentNode.getKey()) < 0) {
-                currentNode = currentNode.getLeft();
-            } else {
-                currentNode = currentNode.getRight();
-            }
-        }
-        return currentNode;
-    }
+ 
 
     /**
      * find the tree successor of a node given as parameter
