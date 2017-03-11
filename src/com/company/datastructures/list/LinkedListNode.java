@@ -37,4 +37,9 @@ public class LinkedListNode<K> implements DataNode<K> {
     public K getKey() {
         return mKey;
     }
+
+    public void setKey(K key) {
+        checkNotNull(key);
+        mKey = key;
+    }
 }

@@ -2,7 +2,6 @@ package com.company.datastructures.list;
 
 import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
-import com.company.datastructures.tree.RedBlackNode;
 
 import java.util.Comparator;
 
@@ -37,17 +36,43 @@ public class LinkedList<K> implements DataStructure<K> {
 
     @Override
     public boolean delete(DataNode<K> node) {
-        return false;
+        checkNotNull(node);
+        LinkedListNode<K> delNode = convertToLinkedNode(node);
+        if (delNode == null) {
+            return false;
+        }
+        if (delNode.getPrevious() != null && delNode.getNext() != null) {
+            delNode.getPrevious().setNext(delNode.getNext());
+            return true;
+        } else if (delNode.getPrevious() == null && delNode.getNext()==null) {
+            mRoot = null;
+            return true;
+        } else if (delNode.getPrevious() == null) {
+            mRoot = delNode.getNext();
+            return true;
+        }else{
+            delNode.getPrevious().setNext(null);
+            return true;
+        }
     }
 
     @Override
     public boolean add(K k) {
-        return false;
+        LinkedListNode<K> newNode = new LinkedListNode<>(k);
+        newNode.setNext(mRoot);
+        mRoot.setPrevious(newNode);
+        mRoot = newNode;
+        return true;
     }
 
     @Override
     public boolean update(DataNode<K> node, K k) {
-        return false;
+        LinkedListNode<K> updateNode = convertToLinkedNode(node);
+        if ( updateNode == null || mComparator.compare(updateNode.getKey(), k) != 0) {
+            return false;
+        }
+        updateNode.setKey(k);
+        return true;
     }
 
     /**
