@@ -57,12 +57,12 @@ public class LinkedList<K> implements DataStructure<K> {
     }
 
     @Override
-    public boolean add(K k) {
+    public DataNode<K> add(K k) {
         LinkedListNode<K> newNode = new LinkedListNode<>(k);
         newNode.setNext(mRoot);
         mRoot.setPrevious(newNode);
         mRoot = newNode;
-        return true;
+        return newNode;
     }
 
     @Override

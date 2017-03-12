@@ -7,7 +7,7 @@ import com.company.datastructures.DataNode;
  * Created by roman on 3/4/17.
  * a red black node in our red black tree
  */
-class RedBlackNode<K> implements DataNode<K> {
+public class RedBlackNode<K> extends DataNode<K> {
     private Color mColor = Color.RED;
     private K mKey = null;
     private RedBlackNode<K> mParent = null;

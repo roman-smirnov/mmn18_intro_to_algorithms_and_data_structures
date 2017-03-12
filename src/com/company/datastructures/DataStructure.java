@@ -9,7 +9,7 @@ public interface DataStructure<K> {
 //    delete the given node
     boolean delete(DataNode<K> node);
 //    add a node with given key to the data-structure
-    boolean add(K k);
+    DataNode<K> add(K k);
 //    update the given node with the given key
     boolean update(DataNode<K> node, K k);
 }

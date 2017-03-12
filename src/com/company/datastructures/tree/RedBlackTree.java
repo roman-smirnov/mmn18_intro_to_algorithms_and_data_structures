@@ -96,12 +96,13 @@ public class RedBlackTree<K> implements DataStructure<K> {
      * @param k
      */
     @Override
-    public boolean add(K k) {
+    public DataNode<K> add(K k) {
         if (find(k) != null) {
-            return false;
+            return null;
         }else {
-            insert(new RedBlackNode<K>(k));
-            return true;
+            RedBlackNode<K> newNode = new RedBlackNode<>(k);
+            insert(newNode);
+            return newNode;
         }
     }
 

@@ -3,6 +3,7 @@ package com.company.commands;
 import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
 import com.company.dataobjects.Customer;
+import com.company.miscellaneous.Pair;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
@@ -18,19 +19,17 @@ public final class UpdateCommand implements Command<Customer>{
     }
 
     @Override
-    public ExecutionState execute(DataStructure<Customer> dataStructure) {
-        checkNotNull(dataStructure);
-        DataNode<Customer> customerDataNode = dataStructure.find(mCustomer);
-        if (customerDataNode == null) {
-            System.out.println(ExecutionState.ERROR_NOT_FOUND +" " + mCustomer);
+    public ExecutionState execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
+        DataNode<Customer> mainDataNode = mainDataStructure.find(mCustomer);
+        if (mainDataNode == null) {
             return ExecutionState.ERROR_NOT_FOUND;
         }else{
-            Customer updatedCustomer = new Customer(mCustomer.getFirstName(),
-                    mCustomer.getLastName(), mCustomer.getId(),
-                    mCustomer.getCustomerId(), mCustomer.getBalance() + customerDataNode.getKey().getBalance());
-            dataStructure.update(customerDataNode, updatedCustomer);
-
-            System.out.println(ExecutionState.SUCCESS_UPDATE+" " + customerDataNode);
+            //delete from other data structures
+            for (Pair<DataStructure<Customer>, DataNode<Customer>> dataPair : mainDataNode.getNodePointers()) {
+                dataPair.getLeft().update(dataPair.getRight(),mCustomer);
+            }
+            //delete from main data structure
+            mainDataStructure.update(mainDataNode, mCustomer);
             return ExecutionState.SUCCESS_UPDATE;
         }
     }

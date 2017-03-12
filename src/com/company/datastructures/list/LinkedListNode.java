@@ -7,7 +7,7 @@ import static com.company.miscellaneous.Preconditions.checkNotNull;
 /**
  * Created by bioel on 11-Mar-17.
  */
-public class LinkedListNode<K> implements DataNode<K> {
+public class LinkedListNode<K> extends DataNode<K> {
     private K mKey;
     private LinkedListNode<K> mPrevious = null;
     private LinkedListNode<K> mNext = null;

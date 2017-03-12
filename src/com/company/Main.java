@@ -1,7 +1,7 @@
 package com.company;
 
 import com.company.commands.Command;
-import com.company.comparators.CustomerIdComparator;
+import com.company.comparators.RedBlackNodeCustomerBalanceComparator;
 import com.company.dataobjects.Customer;
 import com.company.datastructures.DataStructure;
 import com.company.datastructures.tree.RedBlackTree;
@@ -36,7 +36,7 @@ public class Main {
         //command parser converts user input strings into command objects
         CommandParser commandParser = new CommandParser();
         // the datastructure interface abstracts over all our data structures
-        DataStructure<Customer> dataStructure = new RedBlackTree<>(new CustomerIdComparator());
+        DataStructure<Customer> dataStructure = new RedBlackTree<>(new RedBlackNodeCustomerBalanceComparator());
         for (String commandString : getTestCommandList()) {
             //the command interface abstracts over all command classes
             Command<Customer> command = commandParser.getCommand(commandString);
@@ -53,7 +53,7 @@ public class Main {
      */
     private static void handleUserInput() {
         CommandParser commandParser = new CommandParser();
-        DataStructure<Customer> dataStructure = new RedBlackTree<>(new CustomerIdComparator());
+        DataStructure<Customer> dataStructure = new RedBlackTree<>(new RedBlackNodeCustomerBalanceComparator());
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String commandString = scanner.nextLine();
