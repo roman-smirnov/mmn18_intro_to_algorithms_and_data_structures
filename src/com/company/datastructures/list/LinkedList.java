@@ -75,6 +75,21 @@ public class LinkedList<K> implements DataStructure<K> {
         return true;
     }
 
+    @Override
+    public DataNode<K> getMax() {
+        LinkedListNode<K> currentNode = mRoot;
+        LinkedListNode<K> maxKeyNode = mRoot;
+
+        //find a node with specified key in the list
+        while (currentNode != null) {
+            if (mComparator.compare(currentNode.getKey(), maxKeyNode.getKey()) > 0) {
+                maxKeyNode = currentNode;
+            }
+            currentNode = currentNode.getNext();
+        }
+        return maxKeyNode;
+    }
+
     /**
      * converts a DataNode to a LinkedListNode of same type
      * @param node

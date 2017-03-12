@@ -9,10 +9,12 @@ import static com.company.miscellaneous.Preconditions.checkNotNull;
  */
 public class HeapNode<K> extends DataNode<K> {
     private K mKey;
+    private int mIndex;
 
-    public HeapNode(K key) {
+    public HeapNode(K key, int index) {
         checkNotNull(key);
         mKey = key;
+        mIndex = index;
     }
 
     @Override
@@ -24,5 +26,13 @@ public class HeapNode<K> extends DataNode<K> {
     public void setKey(K key) {
         checkNotNull(key);
         mKey = key;
+    }
+
+    public int getIndex() {
+        return mIndex;
+    }
+
+    public void setIndex(int index) {
+        mIndex = index;
     }
 }

@@ -149,6 +149,11 @@ public class RedBlackTree<K> implements DataStructure<K> {
         return true;
     }
 
+    @Override
+    public DataNode<K> getMax() {
+        return treeMaximum(mRoot);
+    }
+
     /**
      * converts a DataNode to a RedBlackNode of same type
      * will throw IllegalArgumentException if it's not RedBlackNode
@@ -338,6 +343,19 @@ public class RedBlackTree<K> implements DataStructure<K> {
         }
         return x;
     }
+
+    /**
+     * find the maximum key of the tree
+     * @param x
+     * @return
+     */
+    private RedBlackNode<K> treeMaximum(RedBlackNode<K> x) {
+        while (x.getRight() != null) {
+            x = x.getRight();
+        }
+        return x;
+    }
+
 
 
     /**

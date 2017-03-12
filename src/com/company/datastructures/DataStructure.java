@@ -12,4 +12,7 @@ public interface DataStructure<K> {
     DataNode<K> add(K k);
 //    update the given node with the given key
     boolean update(DataNode<K> node, K k);
+
+    //  get the node with the maximum key
+    DataNode<K> getMax();
 }
