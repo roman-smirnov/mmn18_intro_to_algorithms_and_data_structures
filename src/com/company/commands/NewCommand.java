@@ -4,6 +4,7 @@ import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
 import com.company.dataobjects.Customer;
 import com.company.miscellaneous.Pair;
+import com.company.ui.ExecutionState;
 import com.company.ui.Logger;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
@@ -28,9 +29,9 @@ public final class NewCommand implements Command<Customer>{
             //now add to other data structures and save pointers to other nodes in main node
             mainNode.getNodePointers().add(new Pair<>(mainDataStructure, secondaryDataStructure.add(mCustomer)));
             mainNode.getNodePointers().add(new Pair<>(secondaryDataStructure, tertiaryDataStructure.add(mCustomer)));
-            Logger.log(mainNode.getKey(),ExecutionState.SUCCESS_ADD);
+            Logger.log(mainNode.getKey(), ExecutionState.ADD_SUCCESS);
         }else{
-            Logger.log(mainNode.getKey(),ExecutionState.ERROR_ALREADY_EXISTS);
+            Logger.log(mainNode.getKey(),ExecutionState.ADD_ERROR_ALREADY_EXISTS);
         }
     }
 }

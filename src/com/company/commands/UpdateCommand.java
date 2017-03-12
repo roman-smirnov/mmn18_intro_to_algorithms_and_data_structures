@@ -4,6 +4,7 @@ import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
 import com.company.dataobjects.Customer;
 import com.company.miscellaneous.Pair;
+import com.company.ui.ExecutionState;
 import com.company.ui.Logger;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
@@ -23,7 +24,7 @@ public final class UpdateCommand implements Command<Customer>{
     public void execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
         DataNode<Customer> mainDataNode = mainDataStructure.find(mCustomer);
         if (mainDataNode == null) {
-            Logger.log(mCustomer,ExecutionState.ERROR_NOT_FOUND);
+            Logger.log(mCustomer, ExecutionState.UPDATE_ERROR_NOT_FOUND);
         }else{
             //delete from other data structures
             for (Pair<DataStructure<Customer>, DataNode<Customer>> dataPair : mainDataNode.getNodePointers()) {
@@ -31,7 +32,7 @@ public final class UpdateCommand implements Command<Customer>{
             }
             //delete from main data structure
             mainDataStructure.update(mainDataNode, mCustomer);
-            Logger.log(mainDataNode.getKey(),ExecutionState.SUCCESS_UPDATE);
+            Logger.log(mainDataNode.getKey(),ExecutionState.UPDATE_SUCCESS);
         }
     }
 }

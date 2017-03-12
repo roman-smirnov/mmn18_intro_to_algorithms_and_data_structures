@@ -1,6 +1,5 @@
 package com.company.ui;
 
-import com.company.commands.ExecutionState;
 import com.company.dataobjects.Customer;
 
 /**

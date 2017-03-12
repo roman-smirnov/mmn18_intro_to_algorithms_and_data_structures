@@ -34,7 +34,6 @@ public class RedBlackTree<K> implements DataStructure<K> {
         checkNotNull(key);
         RedBlackNode<K> currentNode;
         currentNode = mRoot;
-
         while (currentNode != null &&  mComparator.compare(key, currentNode.getKey()) != 0) {
             if (mComparator.compare(key,currentNode.getKey()) < 0) {
                 currentNode = currentNode.getLeft();

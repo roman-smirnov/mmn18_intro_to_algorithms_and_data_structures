@@ -1,0 +1,9 @@
+package com.company.ui;
+
+/**
+ * states for the command execution
+ */
+public enum ExecutionState {
+    UPDATE_SUCCESS, DELETE_SUCCESS, ADD_SUCCESS, FIND_MAX_SUCCESS, UPDATE_ERROR_NOT_FOUND, DELETE_ERROR_NOT_FOUND,
+    ADD_ERROR_ALREADY_EXISTS, DELETE_ERROR_BALANCE_NOT_ZERO, FIND_MAX_ERROR_NO_RECORDS
+}
