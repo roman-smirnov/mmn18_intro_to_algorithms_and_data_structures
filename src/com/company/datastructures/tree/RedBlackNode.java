@@ -3,6 +3,8 @@ package com.company.datastructures.tree;
 
 import com.company.datastructures.DataNode;
 
+import static com.company.miscellaneous.Preconditions.checkNotNull;
+
 /**
  * Created by roman on 3/4/17.
  * a red black node in our red black tree
@@ -56,6 +58,7 @@ public class RedBlackNode<K> extends DataNode<K> {
     }
 
     public void setKey(K key) {
+        checkNotNull(key);
         mKey = key;
     }
 }
