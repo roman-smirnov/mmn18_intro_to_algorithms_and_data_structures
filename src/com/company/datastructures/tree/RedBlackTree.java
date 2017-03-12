@@ -11,6 +11,7 @@ import static com.company.miscellaneous.Preconditions.checkNotNull;
  * implementation of a red black tree
  * The Key and Value are one and the same because it implements comparable
  * all methods essentially copied from the book - modified to not use the nill object pattern
+ *
  * @param <K>
  */
 public class RedBlackTree<K> implements DataStructure<K> {
@@ -26,6 +27,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
 
     /**
      * return the node in the tree containing the key given as parameter, null otherwise
+     *
      * @param key
      * @return the node containing the given key
      */
@@ -34,20 +36,23 @@ public class RedBlackTree<K> implements DataStructure<K> {
         checkNotNull(key);
         RedBlackNode<K> currentNode;
         currentNode = mRoot;
-        while (currentNode != null &&  mComparator.compare(key, currentNode.getKey()) != 0) {
-            if (mComparator.compare(key,currentNode.getKey()) < 0) {
+        while (currentNode != null) {
+            if (mComparator.compare(key, currentNode.getKey()) == 0) {
+                return currentNode;
+            } else if (mComparator.compare(key, currentNode.getKey()) < 0) {
                 currentNode = currentNode.getLeft();
             } else {
                 currentNode = currentNode.getRight();
             }
         }
-        return currentNode;
+        return null;
     }
 
 
     /**
      * Tree delete method.
      * The node to delete must not be null and must be within the tree!
+     *
      * @param node Node to delete.
      */
     @Override
@@ -92,13 +97,14 @@ public class RedBlackTree<K> implements DataStructure<K> {
 
     /**
      * insert a new node into our red black tree
+     *
      * @param k
      */
     @Override
     public DataNode<K> add(K k) {
         if (find(k) != null) {
             return null;
-        }else {
+        } else {
             RedBlackNode<K> newNode = new RedBlackNode<>(k);
             insert(newNode);
             return newNode;
@@ -107,6 +113,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
 
     /**
      * insert a new node into our red black tree
+     *
      * @param newNode
      */
     private void insert(RedBlackNode<K> newNode) {
@@ -116,9 +123,9 @@ public class RedBlackTree<K> implements DataStructure<K> {
         //go down the tree until x is a null leaft
         while (x != null) {
             y = x;
-            if (mComparator.compare(newNode.getKey(),x.getKey()) < 0) {
+            if (mComparator.compare(newNode.getKey(), x.getKey()) < 0) {
                 x = x.getLeft();
-            }else{
+            } else {
                 x = x.getRight();
             }
         }
@@ -128,9 +135,9 @@ public class RedBlackTree<K> implements DataStructure<K> {
         if (y == null) {
             mRoot = newNode;
 //            place the newNode as the left/right child of its parent according to its value
-        } else if (mComparator.compare(newNode.getKey(),y.getKey()) < 0) {
+        } else if (mComparator.compare(newNode.getKey(), y.getKey()) < 0) {
             y.setLeft(newNode);
-        }else{
+        } else {
             y.setRight(newNode);
         }
         //fix the tree
@@ -141,7 +148,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
     @Override
     public boolean update(DataNode<K> node, K k) {
         RedBlackNode<K> updateNode = convertToRedBlack(node);
-        if ( updateNode == null || mComparator.compare(updateNode.getKey(), k) != 0) {
+        if (updateNode == null || mComparator.compare(updateNode.getKey(), k) != 0) {
             return false;
         }
         updateNode.setKey(k);
@@ -156,6 +163,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
     /**
      * converts a DataNode to a RedBlackNode of same type
      * will throw IllegalArgumentException if it's not RedBlackNode
+     *
      * @param node
      * @return
      */
@@ -164,13 +172,14 @@ public class RedBlackTree<K> implements DataStructure<K> {
         // cast node to RedBlackNode because we need to use methods specific to it
         if (node instanceof RedBlackNode) {
             return (RedBlackNode<K>) node;
-        }else {
+        } else {
             return null;
         }
     }
 
     /**
      * fix the tree after inserting a new node
+     *
      * @param newNode
      */
     private void insertFixup(RedBlackNode<K> newNode) {
@@ -220,7 +229,6 @@ public class RedBlackTree<K> implements DataStructure<K> {
         }
         mRoot.setColor(Color.BLACK);
     }
-
 
 
     /**
@@ -311,10 +319,10 @@ public class RedBlackTree<K> implements DataStructure<K> {
         return node == null || node.getColor() == Color.BLACK;
     }
 
- 
 
     /**
      * find the tree successor of a node given as parameter
+     *
      * @param x
      * @return
      */
@@ -333,6 +341,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
 
     /**
      * find the minimum key of the tree
+     *
      * @param x
      * @return
      */
@@ -345,6 +354,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
 
     /**
      * find the maximum key of the tree
+     *
      * @param x
      * @return
      */
@@ -356,9 +366,9 @@ public class RedBlackTree<K> implements DataStructure<K> {
     }
 
 
-
     /**
      * right rotation
+     *
      * @param x
      */
     private void rightRotate(RedBlackNode<K> x) {
@@ -385,6 +395,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
 
     /**
      * left rotation
+     *
      * @param x
      */
     private void leftRotate(RedBlackNode<K> x) {

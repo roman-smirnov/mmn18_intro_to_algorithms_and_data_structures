@@ -1,9 +1,6 @@
 package com.company.ui;
 
-import com.company.commands.Command;
-import com.company.commands.DeleteCommand;
-import com.company.commands.NewCommand;
-import com.company.commands.UpdateCommand;
+import com.company.commands.*;
 import com.company.dataobjects.Customer;
 
 import java.util.Arrays;
@@ -40,18 +37,16 @@ public class CommandParser {
             case DELETE:
                 return generateDeleteCommand(parsedCommand);
             case MAX:
-//                TODO NOT YET IMPLEMENTED
-                System.out.println(CommandType.MAX.name() + "NOT YET IMPLEMENTED");
-                return null;
+                return generateMaxCommand(parsedCommand);
             case MINUS:
-                //                TODO NOT YET IMPLEMENTED
-                System.out.println(CommandType.MINUS.name() + "NOT YET IMPLEMENTED");
-                return null;
+                return generateMinusCommand(parsedCommand);
             default:
-                System.out.println(CommandType.INVALID.name()+ " You've entered an invalid command");
+                System.out.println(CommandType.INVALID+ " You've entered an invalid command");
                 return null;
         }
     }
+
+
 
     /**
      * given a valid string list for a new command, generates a NewCommand
@@ -95,9 +90,25 @@ public class CommandParser {
         return new UpdateCommand(new Customer(firstName,lastName,id, customerId, balance));
     }
 
+    /**
+     * given a valid string list for an MaxCommand, generates a MaxCommand
+     * @param parsedCommand
+     * @return
+     */
+    private Command<Customer> generateMaxCommand(List<String> parsedCommand) {
+        checkNotNull(parsedCommand);
+        return new MaxCommand();
+    }
 
-
-
+    /**
+     * given a valid string list for an MaxCommand, generates a MaxCommand
+     * @param parsedCommand
+     * @return
+     */
+    private Command<Customer> generateMinusCommand(List<String> parsedCommand) {
+        checkNotNull(parsedCommand);
+        return new MinusCommand();
+    }
 
     /**
      * get the type of the command

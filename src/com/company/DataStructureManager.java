@@ -18,7 +18,7 @@ public class DataStructureManager{
 
     public void executeCommand(Command<Customer> command) {
         if (command != null) {
-            command.execute(mHeap, mLinkedList, mHeap);
+            command.execute(mTree, mLinkedList, mHeap);
         }
     }
 }

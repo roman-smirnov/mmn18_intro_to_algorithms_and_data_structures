@@ -24,7 +24,6 @@ public final class NewCommand implements Command<Customer>{
     public void execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
         //try to add to main data structure
         DataNode<Customer> mainNode = mainDataStructure.add(mCustomer);
-
         if(mainNode != null) {
             //now add to other data structures and save pointers to other nodes in main node
             mainNode.getNodePointers().add(new Pair<>(mainDataStructure, secondaryDataStructure.add(mCustomer)));
