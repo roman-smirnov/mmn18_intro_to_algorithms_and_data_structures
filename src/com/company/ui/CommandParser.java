@@ -74,9 +74,9 @@ public class CommandParser {
      * @return
      */
     private DeleteCommand generateDeleteCommand(List<String> parsedCommand) {
-
         int customerId = Integer.parseInt(parsedCommand.get(1));
-        return new DeleteCommand(customerId);
+        Customer customer = new Customer("", "", -1, customerId, 0);
+        return new DeleteCommand(customer);
     }
 
 

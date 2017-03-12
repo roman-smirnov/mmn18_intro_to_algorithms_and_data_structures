@@ -8,6 +8,6 @@ import com.company.datastructures.DataStructure;
  */
 public interface Command<K>{
 
-    ExecutionState execute(DataStructure<K> mainDataStructure,DataStructure<K> secondaryDataStructure, DataStructure<K> tertiaryDataStructure);
+    void execute(DataStructure<K> mainDataStructure,DataStructure<K> secondaryDataStructure, DataStructure<K> tertiaryDataStructure);
 
 }

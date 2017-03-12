@@ -4,6 +4,7 @@ import com.company.dataobjects.Customer;
 import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
 import com.company.miscellaneous.Pair;
+import com.company.ui.Logger;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
@@ -13,14 +14,12 @@ import static com.company.miscellaneous.Preconditions.checkNotNull;
 public final class MaxCommand implements Command<Customer>{
 
     @Override
-    public ExecutionState execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
+    public void execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
         DataNode<Customer> maxDataNode = tertiaryDataStructure.getMax();
         if (maxDataNode == null) {
-            System.out.println("no clients in datastructure");
-            return ExecutionState.ERROR_NOT_FOUND;
+            Logger.log(ExecutionState.ERROR_NO_RECORDS);
         }else{
-            System.out.println("The customer with the max balance is: " + maxDataNode.getKey().toString());
-            return ExecutionState.SUCCESS_MAX;
+            Logger.log(maxDataNode.getKey(),ExecutionState.SUCCESS_MAX);
         }
     }
 }

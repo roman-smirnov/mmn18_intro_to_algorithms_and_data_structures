@@ -4,6 +4,7 @@ import com.company.dataobjects.Customer;
 import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
 import com.company.miscellaneous.Pair;
+import com.company.ui.Logger;
 
 
 /**
@@ -17,12 +18,12 @@ public final class DeleteCommand implements Command<Customer> {
     }
 
     @Override
-    public ExecutionState execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
+    public void execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
         DataNode<Customer> mainDataNode = mainDataStructure.find(mCustomer);
         if (mainDataNode == null) {
-            return ExecutionState.ERROR_NOT_FOUND;
+            Logger.log(mCustomer,ExecutionState.ERROR_NOT_FOUND);
         } else if (mainDataNode.getKey().getBalance() != 0) {
-            return ExecutionState.ERROR_BALANCE_NOT_ZERO;
+            Logger.log(mCustomer,ExecutionState.ERROR_BALANCE_NOT_ZERO);
         } else {
             //delete from other data structures
             for (Pair<DataStructure<Customer>, DataNode<Customer>> dataPair : mainDataNode.getNodePointers()) {
@@ -30,7 +31,7 @@ public final class DeleteCommand implements Command<Customer> {
             }
             //delete from main data structure
             mainDataStructure.delete(mainDataNode);
-            return ExecutionState.SUCCESS_DELETE;
+            Logger.log(mCustomer,ExecutionState.SUCCESS_DELETE);
         }
     }
 

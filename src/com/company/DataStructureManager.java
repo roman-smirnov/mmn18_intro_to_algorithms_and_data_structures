@@ -1,26 +1,24 @@
 package com.company;
 
 import com.company.commands.Command;
-import com.company.commands.ExecutionState;
+import com.company.comparators.CustomerBalanceComparator;
 import com.company.comparators.CustomerIdComparator;
 import com.company.dataobjects.Customer;
+import com.company.datastructures.heap.Heap;
 import com.company.datastructures.list.LinkedList;
-import com.company.datastructures.tree.RedBlackNode;
 import com.company.datastructures.tree.RedBlackTree;
 
 /**
  * Created by bioel on 11-Mar-17.
  */
 public class DataStructureManager{
-    private final RedBlackTree<Customer> mTree = new RedBlackTree<Customer>(new CustomerIdComparator());
-    private final LinkedList<Customer> mLinkedList = new LinkedList<RedBlackNode<Customer>>(new CustomerIdComparator());
-//    private final heap TODO implement a heap data structure
+    private final RedBlackTree<Customer> mTree = new RedBlackTree<>(new CustomerIdComparator());
+    private final LinkedList<Customer> mLinkedList = new LinkedList<>(new CustomerBalanceComparator());
+    private final Heap<Customer> mHeap = new Heap<>(new CustomerBalanceComparator());
 
-    public ExecutionState executeCommand(Command command) {
-        if (command == null) {
-            return ExecutionState.INVALID_COMMAND;
+    public void executeCommand(Command<Customer> command) {
+        if (command != null) {
+            command.execute(mHeap, mLinkedList, mHeap);
         }
-        command.execute(mTree);
-
     }
 }

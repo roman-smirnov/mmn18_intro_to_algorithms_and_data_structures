@@ -1,10 +1,7 @@
 package com.company;
 
 import com.company.commands.Command;
-import com.company.comparators.CustomerIdComparator;
 import com.company.dataobjects.Customer;
-import com.company.datastructures.DataStructure;
-import com.company.datastructures.tree.RedBlackTree;
 import com.company.ui.CommandParser;
 
 import java.util.ArrayList;
@@ -14,36 +11,32 @@ import java.util.Scanner;
 /**
  * MMN18 for intro to algorithms and data structures 2017a
  * by Amit Nissan and Roman Smirnov
- *
  */
 public class Main {
 
     /**
      * the main method
+     *
      * @param args
      */
     public static void main(String[] args) {
-       // uncomment to give commands manually
+        // uncomment to give commands manually
 //        handleUserInput()
         runTests();
     }
 
     /**
-     *
      * integration tests get called from here
      */
     private static void runTests() {
         //command parser converts user input strings into command objects
         CommandParser commandParser = new CommandParser();
         // the datastructure interface abstracts over all our data structures
-        DataStructure<Customer> dataStructure = new RedBlackTree<>(new CustomerIdComparator());
+        DataStructureManager dataStructureManager = new DataStructureManager();
         for (String commandString : getTestCommandList()) {
             //the command interface abstracts over all command classes
             Command<Customer> command = commandParser.getCommand(commandString);
-            if (command != null) {
-                // the execute method executes the command when given a data structure
-                command.execute(dataStructure);
-            }
+            dataStructureManager.executeCommand(command);
         }
     }
 
@@ -53,19 +46,18 @@ public class Main {
      */
     private static void handleUserInput() {
         CommandParser commandParser = new CommandParser();
-        DataStructure<Customer> dataStructure = new RedBlackTree<>(new CustomerIdComparator());
+        DataStructureManager dataStructureManager = new DataStructureManager();
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String commandString = scanner.nextLine();
             Command<Customer> command = commandParser.getCommand(commandString);
-            if (command != null) {
-                command.execute(dataStructure);
-            }
+            dataStructureManager.executeCommand(command);
         }
     }
 
     /**
      * put your tests here
+     *
      * @return
      */
     private static List<String> getTestCommandList() {
@@ -94,7 +86,7 @@ public class Main {
         commandList.add(" r s -1 -1 -1");
 
         // delete stuff
-        commandList.add("- 1    "   );
+        commandList.add("- 1    ");
         commandList.add("- 2");
         commandList.add("-   3");
         commandList.add("- 4");
@@ -106,6 +98,5 @@ public class Main {
 
         return commandList;
     }
-
 
 }

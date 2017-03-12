@@ -60,7 +60,7 @@ public class LinkedList<K> implements DataStructure<K> {
     public DataNode<K> add(K k) {
         LinkedListNode<K> newNode = new LinkedListNode<>(k);
         newNode.setNext(mRoot);
-        mRoot.setPrevious(newNode);
+        newNode.setPrevious(newNode);
         mRoot = newNode;
         return newNode;
     }
