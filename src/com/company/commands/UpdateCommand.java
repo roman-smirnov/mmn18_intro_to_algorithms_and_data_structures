@@ -27,7 +27,6 @@ public final class UpdateCommand implements Command<Customer>{
             //delete from other data structures
             for (Pair<DataStructure<Customer>, DataNode<Customer>> dataPair : mainDataNode.getNodePointers()) {
                 dataPair.getLeft().update(dataPair.getRight(),mCustomer);
-            }
             //delete from main data structure
             mainDataStructure.update(mainDataNode, mCustomer);
             return ExecutionState.SUCCESS_UPDATE;
