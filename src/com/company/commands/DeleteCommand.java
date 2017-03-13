@@ -22,9 +22,9 @@ public final class DeleteCommand implements Command<Customer> {
     public void execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
         DataNode<Customer> mainDataNode = mainDataStructure.find(mCustomer);
         if (mainDataNode == null) {
-            Logger.log(mCustomer, ExecutionState.DELETE_ERROR_NOT_FOUND);
+            Logger.log(mCustomer.getCustomerId(), ExecutionState.DELETE_ERROR_NOT_FOUND);
         } else if (mainDataNode.getKey().getBalance() != 0) {
-            Logger.log(mCustomer,ExecutionState.DELETE_ERROR_BALANCE_NOT_ZERO);
+            Logger.log(mCustomer.getCustomerId(),ExecutionState.DELETE_ERROR_BALANCE_NOT_ZERO);
         } else {
             //delete from other data structures
             for (Pair<DataStructure<Customer>, DataNode<Customer>> dataPair : mainDataNode.getNodePointers()) {

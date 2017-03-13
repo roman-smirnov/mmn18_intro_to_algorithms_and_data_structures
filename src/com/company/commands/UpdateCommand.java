@@ -26,8 +26,9 @@ public final class UpdateCommand implements Command<Customer>{
         if (mainDataNode == null) {
             Logger.log(mCustomer, ExecutionState.UPDATE_ERROR_NOT_FOUND);
         }else{
+            Customer existingCustomer = mainDataNode.getKey();
             //customer is immutable so we have to create a new one
-            Customer updatedCustomer = new Customer(mCustomer.getFirstName(), mCustomer.getLastName(), mCustomer.getId(), mCustomer.getCustomerId(), mCustomer.getBalance() + mainDataNode.getKey().getBalance());
+            Customer updatedCustomer = new Customer(existingCustomer.getFirstName(), existingCustomer.getLastName(), existingCustomer.getId(), existingCustomer.getCustomerId(), mCustomer.getBalance() + existingCustomer.getBalance());
             //delete from other data structures
             for (Pair<DataStructure<Customer>, DataNode<Customer>> dataPair : mainDataNode.getNodePointers()) {
                 dataPair.getLeft().update(dataPair.getRight(), updatedCustomer);

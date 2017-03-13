@@ -26,11 +26,11 @@ public final class NewCommand implements Command<Customer>{
         DataNode<Customer> mainNode = mainDataStructure.add(mCustomer);
         if(mainNode != null) {
             //now add to other data structures and save pointers to other nodes in main node
-            mainNode.getNodePointers().add(new Pair<>(mainDataStructure, secondaryDataStructure.add(mCustomer)));
-            mainNode.getNodePointers().add(new Pair<>(secondaryDataStructure, tertiaryDataStructure.add(mCustomer)));
+            mainNode.getNodePointers().add(new Pair<>(secondaryDataStructure, secondaryDataStructure.add(mCustomer)));
+            mainNode.getNodePointers().add(new Pair<>(tertiaryDataStructure, tertiaryDataStructure.add(mCustomer)));
             Logger.log(mainNode.getKey(), ExecutionState.ADD_SUCCESS);
         }else{
-            Logger.log(mainNode.getKey(),ExecutionState.ADD_ERROR_ALREADY_EXISTS);
+            Logger.log(mCustomer,ExecutionState.ADD_ERROR_ALREADY_EXISTS);
         }
     }
 }

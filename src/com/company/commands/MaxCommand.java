@@ -13,7 +13,7 @@ public final class MaxCommand implements Command<Customer>{
 
     @Override
     public void execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure ) {
-        DataNode<Customer> maxDataNode = tertiaryDataStructure.getMax();
+        DataNode<Customer> maxDataNode = secondaryDataStructure.getMax();
         if (maxDataNode == null) {
             Logger.log(ExecutionState.FIND_MAX_ERROR_NO_RECORDS);
         }else{

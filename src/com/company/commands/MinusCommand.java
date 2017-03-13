@@ -14,15 +14,12 @@ import java.util.List;
 public class MinusCommand implements Command<Customer> {
     @Override
     public void execute(DataStructure<Customer> mainDataStructure, DataStructure<Customer> secondaryDataStructure, DataStructure<Customer> tertiaryDataStructure) {
-        List<Customer> customerList = secondaryDataStructure.getAllKeys(new NegativeBalanceCondition());
+        List<Customer> customerList = tertiaryDataStructure.getAllKeys(new NegativeBalanceCondition());
         if (customerList.size() < 1) {
-            Logger.log(ExecutionState.GET_NEGATIVE_BALANCES_ERROR_NO_RECORDS);
+            Logger.log(ExecutionState.NEGATIVE_BALANCES_ERROR_NO_RECORDS);
             return;
         }else{
-            Logger.log(ExecutionState.GET_NEGATIVE_BALANCES_SUCCESS);
-            for (Customer customer : customerList) {
-                Logger.log(customer);
-            }
+            Logger.log(customerList,ExecutionState.NEGATIVE_BALANCES_SUCCESS);
         }
     }
 }

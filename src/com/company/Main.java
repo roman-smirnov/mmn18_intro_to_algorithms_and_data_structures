@@ -25,6 +25,7 @@ public class Main {
         runTests();
     }
 
+
     /**
      * integration tests get called from here
      */
@@ -70,24 +71,50 @@ public class Main {
         commandList.add("+ r s 4 4 1");
         commandList.add("+ r s 5 5 1");
         commandList.add("+ r s 6 6 1");
-        commandList.add("+ r s 0 0 1");
+        commandList.add("+ r s 0 0 5");
         commandList.add("+ r s 7 7 1");
         commandList.add("+ r s -1 -1 1");
+        commandList.add("+ r s -1 -10 -10");
+        commandList.add("+ r s -1 -11 -11");
+
+
+        // get specific persons
+        commandList.add("? 1");
+        commandList.add("? -1");
+        commandList.add("? 2000");
+        commandList.add("? 0");
+
+
+        // get maximum balance
+        commandList.add("? MAX");
 
         // update stuff
         commandList.add("r   s 1   1 -1");
         commandList.add("    r s 2 2 -1");
         commandList.add(" r s 3 3 -1");
-        commandList.add(" r s            4 4 -1");
+        commandList.add(" r s   4 4 -1");
         commandList.add(" r s 5 5 -1");
         commandList.add(" r s   6 6 -1");
         commandList.add(" r s 0 0 -1");
         commandList.add(" r  s 7   7 -1");
         commandList.add(" r s -1 -1 -1");
 
+        //printout all the negative balances
+        commandList.add("? MINUS");
+
+        // get maximum balance
+        commandList.add("? MAX");
+
         // delete stuff
         commandList.add("- 1    ");
         commandList.add("- 2");
+
+        // get specific persons
+        commandList.add("? 1");
+        commandList.add("? 2");
+        commandList.add("? 3");
+        commandList.add("? 4");
+
         commandList.add("-   3");
         commandList.add("- 4");
         commandList.add("- 5");

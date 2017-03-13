@@ -43,11 +43,11 @@ public final class Customer {
 
     @Override
     public String toString() {
-        return "Customer: " +
-                "FirstName='" + mFirstName + '\'' +
-                ", LastName='" + mLastName + '\'' +
-                ", Id=" + mId +
-                ", CustomerId=" + mCustomerId +
-                ", Balance=" + mBalance;
+        return "customer: " +
+                "first_name='" + mFirstName + '\'' +
+                ", last_name='" + mLastName + '\'' +
+                ", id=" + mId +
+                ", customer_id=" + mCustomerId +
+                ", balance=" + mBalance;
     }
 }

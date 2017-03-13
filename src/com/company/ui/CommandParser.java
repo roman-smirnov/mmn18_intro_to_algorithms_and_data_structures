@@ -14,7 +14,7 @@ import static com.company.miscellaneous.Preconditions.checkNotNull;
  */
 public class CommandParser {
 
-    private enum CommandType{ NEW, UPDATE, DELETE, MAX,MINUS, INVALID}
+    private enum CommandType{ NEW, UPDATE, DELETE, GET, MAX ,MINUS, INVALID}
 
     /**
      * Get the command object
@@ -36,6 +36,8 @@ public class CommandParser {
                 return generateUpdateCommand(parsedCommand);
             case DELETE:
                 return generateDeleteCommand(parsedCommand);
+            case GET:
+                return generateGetCommand(parsedCommand);
             case MAX:
                 return generateMaxCommand(parsedCommand);
             case MINUS:
@@ -45,6 +47,7 @@ public class CommandParser {
                 return null;
         }
     }
+
 
 
 
@@ -91,6 +94,17 @@ public class CommandParser {
     }
 
     /**
+     * given a valid string list for an GetCommand, generates a GetCommand
+     * @param parsedCommand
+     * @return
+     */
+    private Command<Customer> generateGetCommand(List<String> parsedCommand) {
+        int customerId = Integer.parseInt(parsedCommand.get(1));
+        Customer customer = new Customer("", "", -1, customerId, 0);
+        return new GetCommand(customer);
+    }
+
+    /**
      * given a valid string list for an MaxCommand, generates a MaxCommand
      * @param parsedCommand
      * @return
@@ -123,6 +137,8 @@ public class CommandParser {
             return CommandType.UPDATE;
         } else if (validateDeleteClientCommand(parsedCommand)) {
             return CommandType.DELETE;
+        } else if (validateGetCommand(parsedCommand)) {
+            return CommandType.GET;
         } else if (validateMaxCommand(parsedCommand)) {
             return CommandType.MAX;
         } else if (validateMinusCommand(parsedCommand)) {
@@ -179,6 +195,19 @@ public class CommandParser {
     private boolean validateDeleteClientCommand(List<String> cmd) {
         return cmd.size() == DELETE_CLINET_COMMAND_LENGTH
                 && cmd.get(0).equals(DELETE_CLIENT_COMMAND_START_SYMBOL)
+                && isInteger(cmd.get(1));
+    }
+
+    /**
+     * this methods check for the following:
+     * valid number of parameters
+     * valid command start symbol
+     * @param cmd command input string list
+     * @return true if the command is valid, false otherwise
+     */
+    private boolean validateGetCommand(List<String> cmd){
+        return cmd.size() == QUERY_COMMAND_LENGTH
+                && cmd.get(0).equals(QUERY_COMMAND_START_SYMBOL)
                 && isInteger(cmd.get(1));
     }
 

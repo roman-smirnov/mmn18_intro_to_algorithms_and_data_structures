@@ -68,6 +68,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
         RedBlackNode<K> y;
         RedBlackNode<K> x;
         Color tempColor = null;
+
         //check if one of the children is null
         if (delNode.getLeft() == null || delNode.getRight() == null) {
             y = delNode;
@@ -90,12 +91,36 @@ public class RedBlackTree<K> implements DataStructure<K> {
             y.getParent().setRight(x);
         }
         if (y != delNode) {
-            delNode.setKey(y.getKey());
+            if (delNode == mRoot) {
+                mRoot = y;
+            }
+            setSatteliteData(delNode,y);
         }
         if (isBlack(y) && x != null) {
             deleteFixup(x);
         }
         return true;
+    }
+
+    private void setSatteliteData(RedBlackNode<K> delNode, RedBlackNode<K> sucNode) {
+        //set the parent data
+        if (delNode.getParent() != null) {
+            if (delNode.getParent().getLeft() == delNode) {
+                delNode.getParent().setLeft(sucNode);
+            }else{
+                delNode.getParent().setRight(sucNode);
+            }
+        }
+        //set the left child data
+        if (delNode.getLeft() != null) {
+            delNode.getLeft().setParent(sucNode);
+            sucNode.setLeft(delNode.getLeft());
+        }
+        //set the right child data
+        if (delNode.getRight() != null) {
+            delNode.getRight().setParent(sucNode);
+            sucNode.setRight(delNode.getRight());
+        }
     }
 
 
@@ -173,7 +198,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
         List<K> list = new ArrayList<>();
         RedBlackNode<K> currentNode = treeMinimum(mRoot);
         while (currentNode != null) {
-            if (condition.isConditionMet(currentNode.getKey())){
+            if (condition.isConditionMet(currentNode.getKey())) {
                 list.add(currentNode.getKey());
             }
             currentNode = treeSuccessor(currentNode);
@@ -250,7 +275,6 @@ public class RedBlackTree<K> implements DataStructure<K> {
         }
         mRoot.setColor(Color.BLACK);
     }
-
 
 
     /**
