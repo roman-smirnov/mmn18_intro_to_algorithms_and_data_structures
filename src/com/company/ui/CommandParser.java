@@ -87,9 +87,9 @@ public class CommandParser {
         checkNotNull(parsedCommand);
         String firstName = parsedCommand.get(0);
         String lastName = parsedCommand.get(1);
-        int id = Integer.parseInt(parsedCommand.get(2));
-        int customerId = Integer.parseInt(parsedCommand.get(3));
-        int balance = Integer.parseInt(parsedCommand.get(4));
+        int id = -1;
+        int customerId = Integer.parseInt(parsedCommand.get(2));
+        int balance = Integer.parseInt(parsedCommand.get(3));
         return new UpdateCommand(new Customer(firstName,lastName,id, customerId, balance));
     }
 
@@ -182,7 +182,7 @@ public class CommandParser {
      */
     private boolean validateUpdateClientCommand(List<String> cmd) {
         return cmd.size() == UPDATE_CLIENT_COMMAND_LENGTH
-                && checkStringsAreIntegers(cmd, 2, 4);
+                && checkStringsAreIntegers(cmd, 2, 3);
     }
 
     /**
