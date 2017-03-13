@@ -11,6 +11,10 @@ import java.util.List;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
+/**
+ * implementation of a heap
+ * @param <K>
+ */
 public class Heap<K> implements DataStructure<K> {
     private static final int DEFAULT_CAPACITY = 10;
     private static final int FIRST_SON_INDEX = 0;

@@ -1,7 +1,7 @@
 package com.company.conditions;
 
 /**
- * Created by bioel on 13-Mar-17.
+ * a default condition that always returns true
  */
 public class DefaultCondition<K> implements Condition<K>{
     @Override

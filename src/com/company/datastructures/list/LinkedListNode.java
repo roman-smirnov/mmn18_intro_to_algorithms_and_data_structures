@@ -5,7 +5,7 @@ import com.company.datastructures.DataNode;
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
 /**
- * Created by bioel on 11-Mar-17.
+ * a list node for a two-way linked list
  */
 public class LinkedListNode<K> extends DataNode<K> {
     private K mKey;

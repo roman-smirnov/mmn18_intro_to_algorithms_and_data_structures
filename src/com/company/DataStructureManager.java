@@ -9,7 +9,7 @@ import com.company.datastructures.list.LinkedList;
 import com.company.datastructures.tree.RedBlackTree;
 
 /**
- * Created by bioel on 11-Mar-17.
+ *
  */
 public class DataStructureManager{
     private final RedBlackTree<Customer> mTree = new RedBlackTree<>(new CustomerIdComparator());

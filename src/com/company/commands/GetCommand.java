@@ -9,7 +9,7 @@ import com.company.ui.Logger;
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
 /**
- * Created by bioel on 13-Mar-17.
+ * the get command
  */
 public class GetCommand implements Command<Customer> {
     private final Customer mCustomer;

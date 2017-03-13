@@ -9,7 +9,7 @@ import com.company.ui.Logger;
 import java.util.List;
 
 /**
- * Created by bioel on 12-Mar-17.
+ * the minus command
  */
 public class MinusCommand implements Command<Customer> {
     @Override

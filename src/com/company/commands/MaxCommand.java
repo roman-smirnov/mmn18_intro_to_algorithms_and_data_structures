@@ -7,7 +7,7 @@ import com.company.ui.ExecutionState;
 import com.company.ui.Logger;
 
 /**
- *  the update command
+ *  the max command
  */
 public final class MaxCommand implements Command<Customer>{
 

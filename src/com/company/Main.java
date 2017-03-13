@@ -20,8 +20,7 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        // uncomment to give commands manually
-//        handleUserInput()
+//        handleUserInput() // uncomment to give commands manually
         runTests();
     }
 

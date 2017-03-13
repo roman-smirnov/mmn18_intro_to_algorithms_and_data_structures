@@ -5,7 +5,8 @@ import com.company.dataobjects.Customer;
 import javax.swing.*;
 
 /**
- * Created by bioel on 13-Mar-17.
+ * a condition to compare objects against
+ *  returns true when a customer has a negative balance
  */
 public class NegativeBalanceCondition implements Condition<Customer> {
     @Override

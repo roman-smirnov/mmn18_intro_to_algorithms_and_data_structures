@@ -5,7 +5,7 @@ import com.company.datastructures.DataNode;
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
 /**
- * Created by bioel on 12-Mar-17.
+ * a heapnode for a heap
  */
 public class HeapNode<K> extends DataNode<K> {
     private K mKey;

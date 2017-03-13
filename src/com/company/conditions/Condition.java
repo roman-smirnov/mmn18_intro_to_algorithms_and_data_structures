@@ -1,7 +1,8 @@
 package com.company.conditions;
 
 /**
- * Created by bioel on 13-Mar-17.
+ * a condition to compare objects against
+ * @param <K>
  */
 public interface Condition<K> {
     boolean isConditionMet(K key1);
