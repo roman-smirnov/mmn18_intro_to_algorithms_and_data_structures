@@ -1,11 +1,14 @@
 package com.company.datastructures.heap;
 
+import com.company.conditions.Condition;
+import com.company.conditions.DefaultCondition;
 import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
 import com.company.datastructures.tree.RedBlackNode;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
@@ -75,6 +78,20 @@ public class Heap<K> implements DataStructure<K>{
         }
     }
 
+    @Override
+    public List<K> getAllKeys(Condition<K> condition) {
+        if (condition == null) {
+            condition = new DefaultCondition<>();
+        }
+        List<K> list = new ArrayList<>();
+        for (DataNode<K> dataNode : mArrayList) {
+            if (condition.isConditionMet(dataNode.getKey())) {
+                list.add(dataNode.getKey());
+            }
+        }
+        return list;
+    }
+
     private void swap(int index1, int index2) {
         HeapNode<K> tmp = mArrayList.get(index1);
         mArrayList.set(index1,mArrayList.get(index2));
@@ -123,9 +140,9 @@ public class Heap<K> implements DataStructure<K>{
 
     /**
      *
-     * @param index
+     * @param index the parent node index
      * @param childIndex 0 for first son, 1 for second son
-     * @return
+     * @return the index of the requested child
      */
     private int getSon(int index, int childIndex) {
         int sonIndex = 2 * index + childIndex +1;

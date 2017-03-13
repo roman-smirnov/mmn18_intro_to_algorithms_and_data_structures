@@ -1,9 +1,13 @@
 package com.company.datastructures.tree;
 
+import com.company.conditions.Condition;
+import com.company.conditions.DefaultCondition;
 import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
@@ -160,6 +164,23 @@ public class RedBlackTree<K> implements DataStructure<K> {
         return treeMaximum(mRoot);
     }
 
+
+    @Override
+    public List<K> getAllKeys(Condition<K> condition) {
+        if (condition == null) {
+            condition = new DefaultCondition<>();
+        }
+        List<K> list = new ArrayList<>();
+        RedBlackNode<K> currentNode = treeMinimum(mRoot);
+        while (currentNode != null) {
+            if (condition.isConditionMet(currentNode.getKey())){
+                list.add(currentNode.getKey());
+            }
+            currentNode = treeSuccessor(currentNode);
+        }
+        return list;
+    }
+
     /**
      * converts a DataNode to a RedBlackNode of same type
      * will throw IllegalArgumentException if it's not RedBlackNode
@@ -229,6 +250,7 @@ public class RedBlackTree<K> implements DataStructure<K> {
         }
         mRoot.setColor(Color.BLACK);
     }
+
 
 
     /**

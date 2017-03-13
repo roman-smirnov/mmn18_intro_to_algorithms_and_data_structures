@@ -1,9 +1,13 @@
 package com.company.datastructures.list;
 
+import com.company.conditions.Condition;
+import com.company.conditions.DefaultCondition;
 import com.company.datastructures.DataNode;
 import com.company.datastructures.DataStructure;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static com.company.miscellaneous.Preconditions.checkNotNull;
 
@@ -88,6 +92,24 @@ public class LinkedList<K> implements DataStructure<K> {
             currentNode = currentNode.getNext();
         }
         return maxKeyNode;
+    }
+
+
+    @Override
+    public List<K> getAllKeys(Condition<K> condition) {
+        if (condition == null) {
+            condition = new DefaultCondition<>();
+        }
+        List<K> list = new ArrayList<>(10);
+        LinkedListNode<K> currentNode = mRoot;
+
+        while (currentNode != null) {
+            if (condition.isConditionMet(currentNode.getKey())) {
+                list.add(currentNode.getKey());
+            }
+            currentNode = currentNode.getNext();
+        }
+        return list;
     }
 
     /**
