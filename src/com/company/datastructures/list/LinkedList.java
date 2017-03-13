@@ -72,7 +72,7 @@ public class LinkedList<K> implements DataStructure<K> {
     @Override
     public boolean update(DataNode<K> node, K k) {
         LinkedListNode<K> updateNode = convertToLinkedNode(node);
-        if ( updateNode == null || mComparator.compare(updateNode.getKey(), k) != 0) {
+        if ( updateNode == null) {
             return false;
         }
         updateNode.setKey(k);
